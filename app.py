@@ -21,9 +21,6 @@ def load_pickle_files():
 # Load model and preprocessing tools
 scaler, label_encoders, model = load_pickle_files()
 
-# App title
-st.title("Car Price Prediction App")
-
 # Input fields
 sub_category = st.selectbox("Select Sub Category", options=list(label_encoders['sub_category'].classes_))
 gender = st.selectbox("Select Gender", options=list(label_encoders['gender'].classes_))
