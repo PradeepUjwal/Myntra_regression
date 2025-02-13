@@ -22,7 +22,7 @@ def load_pickle_files():
 scaler, label_encoders, model = load_pickle_files()
 
 # Retrieve LabelEncoders
-sub_category_encoder = label_encoders.get('sub_category')
+sub_category_encoder = label_encoder.get('sub_category')
 gender_encoder = label_encoders.get('gender')
 
 if sub_category_encoder and gender_encoder:
