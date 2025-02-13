@@ -11,7 +11,7 @@ def load_pickle_files():
         scaler = pickle.load(f)
     
     with open('label_encoder.pkl', 'rb') as f:
-        label_encoders = pickle.load(f)
+        label_encoders = pickle.load(f)  # Now correctly stored as a dictionary
     
     with open('xgb_model.pkl', 'rb') as f:
         model = pickle.load(f)
@@ -21,7 +21,7 @@ def load_pickle_files():
 # Load model and preprocessing tools
 scaler, label_encoders, model = load_pickle_files()
 
-# Retrieve LabelEncoders
+# Retrieve LabelEncoders from dictionary
 sub_category_encoder = label_encoders.get('sub_category')
 gender_encoder = label_encoders.get('gender')
 
