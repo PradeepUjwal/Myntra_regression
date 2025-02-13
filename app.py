@@ -66,7 +66,7 @@ input_features = np.array([
 scaled_features = scaler.transform(input_features)
 
 # Predict button
-if st.button("Predict Selling Price") and sub_category_encoded is not None and gender_encoded is not None:
+if st.button("Predicted Rating") and sub_category_encoded is not None and gender_encoded is not None:
     features = np.array([
         [
             sub_category_encoded, gender_encoded,
