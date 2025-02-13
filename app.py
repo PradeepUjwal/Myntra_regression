@@ -2,9 +2,6 @@ import pickle
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
-# Load Data (Replace with actual data loading logic)
-data = pd.read_csv('myntra1.csv')
-
 # Feature Engineering
 data['product_avg_rating'] = data.groupby('name')['rating'].transform('mean')
 data['product_rating_deviation'] = data['rating'] - data['product_avg_rating']
