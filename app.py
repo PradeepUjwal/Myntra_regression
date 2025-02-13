@@ -7,7 +7,7 @@ import pandas as pd
 with open('xgb_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
-with open('label_encoders.pkl', 'rb') as encoding_file:
+with open('label_encoder.pkl', 'rb') as encoding_file:
     label_encoders = pickle.load(encoding_file)
 
 with open('scaler.pkl', 'rb') as scaler_file:
