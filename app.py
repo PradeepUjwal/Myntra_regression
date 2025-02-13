@@ -49,3 +49,5 @@ if st.button("Predict Selling Price") and sub_category_encoded is not None and g
     features = np.array([[sub_category_encoded, gender_encoded, scaled_features[0][0], scaled_features[0][1], scaled_features[0][2]]])
     prediction = model.predict(features)
     st.success(f"Predicted Selling Price: ${prediction[0]:,.2f}")
+
+
