@@ -22,8 +22,8 @@ def load_pickle_files():
 scaler, label_encoders, model = load_pickle_files()
 
 # Retrieve LabelEncoders
-sub_category_encoder = label_encoder.get('sub_category')
-gender_encoder = label_encoder.get('gender')
+sub_category_encoder = label_encoders.get('sub_category')
+gender_encoder = label_encoders.get('gender')
 
 if sub_category_encoder and gender_encoder:
     sub_category = st.selectbox("Select Sub Category", options=list(sub_category_encoder.classes_))
@@ -33,7 +33,7 @@ if sub_category_encoder and gender_encoder:
     sub_category_encoded = sub_category_encoder.transform([sub_category])[0]
     gender_encoded = gender_encoder.transform([gender])[0]
 else:
-    st.error("Encoding files not loaded properly. Please check label_encoders.pkl.")
+    st.error("Encoding files not loaded properly. Please check label_encoder.pkl.")
     sub_category_encoded, gender_encoded = None, None
 
 # Input fields
