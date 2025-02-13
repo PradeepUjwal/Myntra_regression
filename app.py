@@ -3,28 +3,25 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 # Feature Engineering
-data['product_avg_rating'] = data.groupby('name')['rating'].transform('mean')
-data['product_rating_deviation'] = data['rating'] - data['product_avg_rating']
-data.drop('product_avg_rating', axis=1, inplace=True)
+myntra['product_avg_rating'] = myntra.groupby('name')['rating'].transform('mean')
+myntra['product_rating_deviation'] = myntra['rating'] - myntra['product_avg_rating']
+myntra.drop('product_avg_rating', axis=1, inplace=True)
 
-data['Magic8_Product_min'] = data.groupby('name')['rating'].transform('min')
-data['Magic9_Product_max'] = data.groupby('name')['rating'].transform('max')
+myntra['Magic8_Product_min'] = myntra.groupby('name')['rating'].transform('min')
+myntra['Magic9_Product_max'] = myntra.groupby('name')['rating'].transform('max')
 
 # Encoding categorical features
 label_encoders = {}
 for col in ['sub_category', 'gender']:
     le = LabelEncoder()
-    data[col] = le.fit_transform(data[col])
+    myntra[col] = le.fit_transform(myntra[col])
     label_encoders[col] = le
 
 # Standard Scaling
 scaler = StandardScaler()
 scaled_features = ['product_rating_deviation', 'Magic8_Product_min', 'Magic9_Product_max']
-data[scaled_features] = scaler.fit_transform(data[scaled_features])
+myntra[scaled_features] = scaler.fit_transform(myntra[scaled_features])
 
-
-# Save Processed Data (for further model training)
-data.to_csv('processed_myntra.csv', index=False)
 
 # Load Pickle Files (For Deployment)
 def load_pickle_files():
