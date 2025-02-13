@@ -78,4 +78,4 @@ if st.button("Predict Selling Price") and sub_category_encoded is not None and g
         ]
     ])
     prediction = model.predict(features)
-    st.success(f"Predicted Selling Price: ${prediction[0]:,.2f}")
+    st.success(f"Predicted Rating: ${prediction[0]:,.2f}")
