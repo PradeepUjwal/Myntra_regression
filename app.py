@@ -1,36 +1,35 @@
+import streamlit as st
 import pickle
+import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler, LabelEncoder
 
-# Feature Engineering
-myntra['product_avg_rating'] = myntra.groupby('name')['rating'].transform('mean')
-myntra['product_rating_deviation'] = myntra['rating'] - myntra['product_avg_rating']
-myntra.drop('product_avg_rating', axis=1, inplace=True)
+# Load the model and encoding
+with open('xgb_model.pkl', 'rb') as model_file:
+    model = pickle.load(model_file)
 
-myntra['Magic8_Product_min'] = myntra.groupby('name')['rating'].transform('min')
-myntra['Magic9_Product_max'] = myntra.groupby('name')['rating'].transform('max')
+with open('label_encoders.pkl', 'rb') as encoding_file:
+    label_encoders = pickle.load(encoding_file)
 
-# Encoding categorical features
-label_encoders = {}
-for col in ['sub_category', 'gender']:
-    le = LabelEncoder()
-    myntra[col] = le.fit_transform(myntra[col])
-    label_encoders[col] = le
+with open('scaler.pkl', 'rb') as scaler_file:
+    scaler = pickle.load(scaler_file)
 
-# Standard Scaling
-scaler = StandardScaler()
-scaled_features = ['product_rating_deviation', 'Magic8_Product_min', 'Magic9_Product_max']
-myntra[scaled_features] = scaler.fit_transform(myntra[scaled_features])
+# Input fields
+sub_category = st.selectbox("Select Sub Category", options=list(label_encoders['sub_category'].classes_))
+gender = st.selectbox("Select Gender", options=list(label_encoders['gender'].classes_))
+product_rating_deviation = st.number_input("Product Rating Deviation", value=0.0)
+magic8_product_min = st.number_input("Magic8 Product Min", value=0.0)
+magic9_product_max = st.number_input("Magic9 Product Max", value=0.0)
 
+# Encoding inputs
+sub_category_encoded = label_encoders['sub_category'].transform([sub_category])[0]
+gender_encoded = label_encoders['gender'].transform([gender])[0]
 
-# Load Pickle Files (For Deployment)
-def load_pickle_files():
-    with open('scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
-    
-    with open('label_encoders.pkl', 'rb') as f:
-        label_encoders = pickle.load(f)
-    
-    return scaler, label_encoders
+# Scale numerical inputs
+scaled_features = scaler.transform([[product_rating_deviation, magic8_product_min, magic9_product_max]])
 
-scaler, label_encoders = load_pickle_files()
+# Predict button
+if st.button("Predict Selling Price"):
+    features = np.array([[sub_category_encoded, gender_encoded, scaled_features[0][0], scaled_features[0][1], scaled_features[0][2]]])
+    prediction = model.predict(features)
+    st.success(f"Predicted Selling Price: ${prediction[0]:,.2f}")
+
