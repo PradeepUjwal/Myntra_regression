@@ -36,16 +36,46 @@ else:
     st.error("Encoding files not loaded properly. Please check label_encoder.pkl.")
     sub_category_encoded, gender_encoded = None, None
 
-# Input fields
-product_rating_deviation = st.number_input("Product Rating Deviation", value=0.0)
-magic8_product_min = st.number_input("Magic8 Product Min", value=0.0)
-magic9_product_max = st.number_input("Magic9 Product Max", value=0.0)
+# Input fields for 15 features
+feature_1 = st.number_input("Feature 1", value=0.0)
+feature_2 = st.number_input("Feature 2", value=0.0)
+feature_3 = st.number_input("Product Rating Deviation", value=0.0)
+feature_4 = st.number_input("Magic8 Product Min", value=0.0)
+feature_5 = st.number_input("Magic9 Product Max", value=0.0)
+feature_6 = st.number_input("Feature 6", value=0.0)
+feature_7 = st.number_input("Feature 7", value=0.0)
+feature_8 = st.number_input("Feature 8", value=0.0)
+feature_9 = st.number_input("Feature 9", value=0.0)
+feature_10 = st.number_input("Feature 10", value=0.0)
+feature_11 = st.number_input("Feature 11", value=0.0)
+feature_12 = st.number_input("Feature 12", value=0.0)
+feature_13 = st.number_input("Feature 13", value=0.0)
+feature_14 = st.number_input("Feature 14", value=0.0)
+feature_15 = st.number_input("Feature 15", value=0.0)
 
-# Scale numerical inputs
-scaled_features = scaler.transform([[product_rating_deviation, magic8_product_min, magic9_product_max]])
+# Create feature array
+input_features = np.array([
+    [
+        feature_1, feature_2, feature_3, feature_4, feature_5,
+        feature_6, feature_7, feature_8, feature_9, feature_10,
+        feature_11, feature_12, feature_13, feature_14, feature_15
+    ]
+])
+
+# Transform correctly with 15 features
+scaled_features = scaler.transform(input_features)
 
 # Predict button
 if st.button("Predict Selling Price") and sub_category_encoded is not None and gender_encoded is not None:
-    features = np.array([[sub_category_encoded, gender_encoded, scaled_features[0][0], scaled_features[0][1], scaled_features[0][2]]])
+    features = np.array([
+        [
+            sub_category_encoded, gender_encoded,
+            scaled_features[0][0], scaled_features[0][1], scaled_features[0][2],
+            scaled_features[0][3], scaled_features[0][4], scaled_features[0][5],
+            scaled_features[0][6], scaled_features[0][7], scaled_features[0][8],
+            scaled_features[0][9], scaled_features[0][10], scaled_features[0][11],
+            scaled_features[0][12], scaled_features[0][13], scaled_features[0][14]
+        ]
+    ])
     prediction = model.predict(features)
     st.success(f"Predicted Selling Price: ${prediction[0]:,.2f}")
